@@ -340,7 +340,7 @@ form .row:first-child .floating-label-form-group {
 .btn {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
   letter-spacing: 1px;
   border-radius: 0;
@@ -352,9 +352,9 @@ form .row:first-child .floating-label-form-group {
 }
 .btn-default:hover,
 .btn-default:focus {
-  background-color: #0085a1;
-  border: 1px solid #0085a1;
-  color: white;
+  background-color: #e9b3a9;
+  border: 1px solid #da7d6c;
+  color: black;
 }
 .pager {
   margin: 20px 0 0;
@@ -392,7 +392,7 @@ form .row:first-child .floating-label-form-group {
 ::selection {
   color: white;
   text-shadow: none;
-  background: #0085a1;
+  background: white;
 }
 img::selection {
   color: white;
