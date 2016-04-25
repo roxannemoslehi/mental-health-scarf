@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-{% extends "bootstrap/base.html" %}
-
 <head>
 
     <meta charset="utf-8">
@@ -13,26 +11,19 @@
 
     <title>TITLE</title>
 
-
-    <!-- Custom Fonts -->
-
-    {% block styles %}
-    {{ super() }}
- <!-- Bootstrap Core CSS -->
-
+    <!-- Bootstrap Core CSS -->
     <!-- <link href="/web_ui/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
-
 
     <!-- Custom CSS -->
     <!-- <link href="/web_ui/css/clean-blog.css" rel="stylesheet"> -->
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='clean-blog.css') }}">
 
+    <!-- Custom Fonts -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
-    {% endblock %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -55,7 +46,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Awearness</a>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Awearness</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -87,7 +78,6 @@
                     <div class="site-heading home">
                         <form action="/send_love" method="post">
                         <button class="btn btn-default" name="submit"type="submit" style="margin-bottom: 10px; margin-top: 10px" value="love">Send Love</button>
-                    </form>
                         <span class="subheading" style="line-height: 28px" >Click this button to anonymously send happy vibes to your fellow students on campus.</span>
                     </div>
                 </div>

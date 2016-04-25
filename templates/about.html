@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
-{% extends "bootstrap/base.html" %}
 
-{% block head %}
+<head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,8 +16,7 @@
 
     <!-- Custom Fonts -->
 
-    {% block styles %}
-    {{ super() }}
+
  <!-- Bootstrap Core CSS -->
 
     <!-- <link href="/web_ui/css/bootstrap.min.css" rel="stylesheet"> -->
@@ -33,7 +31,7 @@
     <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
-    {% endblock %}
+</head>
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -43,10 +41,9 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-{% endblock %}
 
 
-{% block body %}
+<body>
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
         <div class="container-fluid">
@@ -58,7 +55,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Awearness</a>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Awearness</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -114,6 +111,6 @@
     <!-- Custom Theme JavaScript -->
     <script src="js/clean-blog.min.js"></script>
 
-{% endblock %}
+</body>
 
 </html>

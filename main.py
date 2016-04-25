@@ -1,16 +1,17 @@
 from flask import Flask, render_template,request, redirect, url_for
 from flask_bootstrap import Bootstrap
+
 app = Flask(__name__)
 Bootstrap(app)
 # we are able to make 2 different requests on our webpage
 # GET = we just type in the url
 # POST = some sort of form submission like a button
 
-stress_count = 0 # global stress count
+stress_count = 258 # global stress count
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', count=stress_count)
 
 @app.route('/about')
 def about():
