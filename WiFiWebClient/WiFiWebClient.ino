@@ -23,6 +23,11 @@
 #include <SPI.h>
 #include <Adafruit_WINC1500.h>
 
+#include <Wire.h>
+#include "Adafruit_DRV2605.h"
+
+
+
 // Define the WINC1500 board connections below.
 // If you're following the Adafruit WINC1500 board
 // guide you don't need to modify these:
@@ -47,6 +52,19 @@ char ssid[] = "Shabahaba";     //  your network SSID (name)
 char pass[] = "hellowassup";    // your network password (use for WPA, or use as key for WEP)
 int keyIndex = 0;                // your network key Index number (needed only for WEP)
 
+
+Adafruit_DRV2605 drv;
+
+int pin1 = 6;
+volatile int state = LOW;
+
+long lastDebounceTime = 0;
+long debounceDelay = 300;
+int lastButton = LOW;
+int buttonState;
+
+long lastButtonPress = 0;
+
 int status = WL_IDLE_STATUS;
 // if you don't want to use DNS (and reduce your sketch size)
 // use the numeric IP instead of the name for the server:
@@ -65,6 +83,22 @@ void setup() {
   pinMode(WINC_EN, OUTPUT);
   digitalWrite(WINC_EN, HIGH);
 #endif
+
+//  while (!Serial);  // required for Flora & Micro
+  delay(500);
+  Serial.begin(9600);
+  pinMode(pin1, INPUT_PULLUP);
+
+// vibration testing
+  Serial.println("DRV test");
+  drv.begin();
+  
+  drv.selectLibrary(1);
+  
+  // I2C trigger by sending 'go' command 
+  // default, internal trigger when sending GO command
+  drv.setMode(DRV2605_MODE_INTTRIG); 
+  
 
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
@@ -99,20 +133,11 @@ void setup() {
 
   Serial.println("Connected to wifi");
   printWifiStatus();
-
-  Serial.println("\nStarting connection to server...");
-  // if you get a connection, report back via serial:
-  if (client.connect(server, 80)) {
-    Serial.println("connected to server");
-    // Make a HTTP request:
-    client.print("GET ");
-    client.print(webpage);
-    client.println(" HTTP/1.1");
-    client.print("Host: "); client.println(server);
-    client.println("Connection: close");
-    client.println();
-  }
 }
+
+
+
+uint8_t effect = 1;
 
 void loop() {
   // if there are incoming bytes available
@@ -122,16 +147,44 @@ void loop() {
     Serial.write(c);
   }
 
-  // if the server's disconnected, stop the client:
-  if (!client.connected()) {
-    Serial.println();
-    Serial.println("disconnecting from server.");
-    client.stop();
+  if (digitalRead(pin1) == LOW && (millis() - lastDebounceTime) > debounceDelay) {
+        long pressed = millis();
+        Serial.println("------ BUTTON PRESSED ------");
+        post();
+        lastDebounceTime = millis();
+//  } else {
+//        Serial.println("HIGH");
 
-    // do nothing forevermore:
-    while (true);
   }
+
+//vibration testing
+  Serial.print("Effect #"); Serial.println(effect);
+
+  // set the effect to play
+  drv.setWaveform(0, effect);  // play effect 
+  drv.setWaveform(1, 0);       // end waveform
+
+  // play the effect!
+  drv.go();
+
+  // wait a bit
+  delay(500);
+
+  effect++;
+  if (effect > 117) effect = 1;
+
+  // if the server's disconnected, stop the client:
+//  if (!client.connected()) {
+//    Serial.println();
+//    Serial.println("disconnecting from server.");
+//    client.stop();
+//
+//    // do nothing forevermore:
+//    while (true);
+//  }
 }
+
+
 
 
 void printWifiStatus() {
@@ -149,4 +202,36 @@ void printWifiStatus() {
   Serial.print("signal strength (RSSI):");
   Serial.print(rssi);
   Serial.println(" dBm");
+}
+
+void post()
+{
+
+        if (client.connect(server, 80)) {
+          Serial.println("connected to server");
+          // Make a HTTP request:
+
+          // For testing
+          client.print("GET ");
+          client.print(webpage);
+          client.println(" HTTP/1.1");
+          client.print("Host: "); client.println(server);
+          client.println("Connection: close");
+          client.println();
+
+//    
+//          client.print("GET ");
+//  //        client.print(webpage);
+//          client.print("/");
+//          client.print(lat,9);
+//          client.print("&lon=");
+//          client.print(lon,9); 
+//          client.println(" HTTP/1.1");
+//          client.print("Host: "); 
+//  
+//  //        ?var1=value1&var2=value2&var3=value3
+//          client.println(server);
+//          client.println("Connection: close");
+//          client.println();
+      }
 }
