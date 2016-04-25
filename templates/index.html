@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+
+
 <html lang="en">
 
 <head>
@@ -11,11 +13,16 @@
 
     <title>TITLE</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="/web_ui/css/bootstrap.min.css" rel="stylesheet">
+   <!-- <link href="/web_ui/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
+
+
+
+
 
     <!-- Custom CSS -->
-    <link href="/web_ui/css/clean-blog.css" rel="stylesheet">
+    <!-- <link href="/web_ui/css/clean-blog.css" rel="stylesheet"> -->
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='clean-blog.css') }}">
 
     <!-- Custom Fonts -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -51,13 +58,13 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="index.html">Home</a>
+                        <a href="{{ url_for('index') }}">Home</a>
                     </li>
                     <li>
-                        <a href="about.html">About</a>
+                        <a href="{{ url_for('about') }}">About</a>
                     </li>
                     <li>
-                        <a href="happy.html">Send Love</a>
+                        <a href="{{ url_for('send_love') }}">Send Love</a>
                     </li>
                 </ul>
             </div>
