@@ -6,8 +6,7 @@
  to the Serial monitor. From there, you can open that address in a web browser
  to turn on and off the LED on pin 13.
  If the IP address of your shield is yourAddress:
- http://yourAddress/H turns the LED on
- http://yourAddress/L turns it off
+ http://yourAddress/love turns the vibrations on
  This example is written for a network using WPA encryption. For
  WEP or WPA, change the Wifi.begin() call accordingly.
  Circuit:
@@ -43,10 +42,10 @@ Adafruit_WINC1500 WiFi(WINC_CS, WINC_IRQ, WINC_RST);
 // value below from 13 to something else that doesn't conflict with the SPI
 // pins.  Try pin 9 for example.
 // **** WARNING ****
-#define LED_PIN  13  // This example assumes you have a LED connected to pin 13
-                     // (with a resistor to limit current!).  Connect LED anode
-                     // (longer leg) to pin 9, then LED cathode (shorter pin)
-                     // through a resistor (~300-1k ohm) to ground.
+//#define LED_PIN  13  // This example assumes you have a LED connected to pin 13
+//                     // (with a resistor to limit current!).  Connect LED anode
+//                     // (longer leg) to pin 9, then LED cathode (shorter pin)
+//                     // through a resistor (~300-1k ohm) to ground.
 
 char ssid[] = "feather";      //  created AP name
 char pass[] = "wing";         // (not supported yet)
@@ -66,7 +65,6 @@ void setup() {
 
   Serial.println("Access Point Web Server");
 
-  pinMode(LED_PIN, OUTPUT);      // set the LED pin mode
 
   // check for the presence of the shield:
   if (WiFi.status() == WL_NO_SHIELD) {
@@ -106,9 +104,6 @@ void loop() {
             client.println("Content-type:text/html");
             client.println();
 
-            // the content of the HTTP response follows the header:
-            client.print("Click <a href=\"/H\">here</a> turn the LED on<br>");
-            client.print("Click <a href=\"/L\">here</a> turn the LED off<br>");
 
             // The HTTP response ends with another blank line:
             client.println();
@@ -124,12 +119,10 @@ void loop() {
         }
 
         // Check to see if the client request was "GET /H" or "GET /L":
-        if (currentLine.endsWith("GET /H")) {
-          digitalWrite(LED_PIN, HIGH);               // GET /H turns the LED on
+        if (currentLine.endsWith("GET /love")) {
+          Serial.print("Got get request");               // GET /H turns the LED on
         }
-        if (currentLine.endsWith("GET /L")) {
-          digitalWrite(LED_PIN, LOW);                // GET /L turns the LED off
-        }
+      
       }
     }
     // close the connection:

@@ -10,6 +10,10 @@ Bootstrap(app)
 
 global stress_count  #global stress count
 stress_count = 0
+global is_pressed
+is_pressed = 0
+global changed
+changed = 0
 
 @app.route('/')
 def index():
@@ -22,17 +26,48 @@ def about():
 @app.route('/send_love', methods=["POST", "GET"])
 def send_love():
 
+
     # if send love button is pressed, make post request to scarf
     if request.method == "POST":
         if request.form['submit'] == 'love':
             print 'SENT LOVE!'
-            r = requests.post('put scarf url here', data = "love")
+            global is_pressed
+            is_pressed = 1
+            print is_pressed
         else:
             pass
 
     # display happy.html page
 
     return render_template('happy.html')
+
+@app.route('/pressed', methods=["POST", "GET"])
+def pressed():
+    global is_pressed
+    global changed
+
+    if request.method == "POST":
+        print "GOT POST REQUEST FOR /PRESSED"
+        print "Pressed?: ", is_pressed
+        if (request.get_data() == "checking"):
+            if (is_pressed == 1):
+                if changed == 5:
+                    # made succesful post request, change pressed back to unpressed
+                    is_pressed = 0
+                    print "setting button to unpressed"
+                    changed = 0
+                else:
+                    changed+= 1
+                    pass
+            else:
+                print "button isn't pressed"
+                pass
+        else:
+            pass
+
+
+    return render_template('pressed.html', pressed=is_pressed)
+
 
 # feather will send post request to /stressed page
 # when we get post request, we update counter/main page
@@ -51,6 +86,8 @@ def im_stressed():
 
 
 if __name__ == "__main__":
+
+
     # lets launch our webpage!
     # do 0.0.0.0 so that we can log into this webpage
     # using another computer on the same network later

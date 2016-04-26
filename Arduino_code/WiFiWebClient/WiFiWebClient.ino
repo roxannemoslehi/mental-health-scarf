@@ -70,14 +70,14 @@ int status = WL_IDLE_STATUS;
 // if you don't want to use DNS (and reduce your sketch size)
 // use the numeric IP instead of the name for the server:
 //IPAddress server(141,101,112,175);  // numeric IP for test page (no DNS)
-char server[] = "bb0bb46e.ngrok.io";    // domain name for test page (using DNS)
-#define webpage "/stressed"  // path to test page
+char server[] = "e5446b2b.ngrok.io";    // domain name for test page (using DNS)
 
 
 // Initialize the Ethernet client library
 // with the IP address and port of the server
 // that you want to connect to (port 80 is default for HTTP):
 Adafruit_WINC1500Client client;
+Adafruit_WINC1500Client client2;
 
 void setup() {
 #ifdef WINC_EN
@@ -133,17 +133,9 @@ void setup() {
   }
 
   Serial.println("Connected to wifi");
-  printWifiStatus();
+  printWifiStatus();  
 
-//  connection = client.connect(server, 80);
-//  delay(1000);
-//  if (connection) {
-//    Serial.println("Connected to server");
-//  } else {
-//    Serial.println("Not connected to server");
-//  }
-
-  
+  check();
 }
 
 
@@ -153,46 +145,61 @@ uint8_t effect = 1;
 void loop() {
   // if there are incoming bytes available
   // from the server, read them and print them:
-//  while (client.available()) {
-//    char c = client.read();
-//    Serial.write(c);
-//  }
+  int count = 0;
+  
+  
+  char pressed;
+  while (client.available()) {
+    while (count != 155) {
+      pressed = client.read();
+      Serial.write(pressed);
+      count ++;
+    }
+
+    char yes = '1';
+    char no = '0';
+    if (pressed == yes) {
+          Serial.println("Pressed");
+          delay(1000);
+          vibrate();
+    }
+    if (pressed == no) {
+          Serial.println("Not pressed");
+ 
+    }
+      count = 0;
+
+  }
+
+  check();
+
+  
   
   if (digitalRead(pin1) == LOW && (millis() - lastDebounceTime) > debounceDelay) {
         long pressed = millis();
         Serial.println("------ BUTTON PRESSED ------");
-//        post(connection);
         post();
         lastDebounceTime = millis();
 //  } else {
 //        Serial.println("HIGH");
 
+
   }
 
-//vibration testing
-//  Serial.print("Effect #"); Serial.println(effect);
-//
-//  // set the effect to play
-//  drv.setWaveform(0, effect);  // play effect 
-//  drv.setWaveform(1, 0);       // end waveform
-//
-//  // play the effect!
-//  drv.go();
-//
-//  // wait a bit
-//  delay(500);
-//
-//  effect++;
-//  if (effect > 117) effect = 1;
 
-  // if the server's disconnected, stop the client:
+
+//vibration testing
+
+
+//   if the server's disconnected, stop the client:
 //  if (!client.connected()) {
 //    Serial.println();
 //    Serial.println("disconnecting from server.");
 //    client.stop();
-//
-//    // do nothing forevermore:
-//    while (true);
+////
+////    // do nothing forevermore:
+////    while (true);
+////  }
 //  }
 }
 
@@ -216,11 +223,8 @@ void printWifiStatus() {
   Serial.println(" dBm");
 }
 
-//void post(bool connection)
 void post()
 {
-
-//        if (connection) 
       if (client.connect(server, 80)) 
       {
           Serial.println("Connected");
@@ -231,7 +235,7 @@ void post()
           String data = "love";
           // For testing
           client.print("POST ");
-          client.print(webpage);
+          client.print("/stressed");
           client.println(" HTTP/1.1");
           client.print("Host: "); client.println(server);
           client.println("Connection: close");
@@ -243,4 +247,63 @@ void post()
           client.println();                           
 
       }
+
+ 
 }
+
+void check()
+{
+
+//      char server2[] = "http://e5446b2b.ngrok.io/pressed";
+      
+      if (client.connect(server, 80)) 
+      {
+          Serial.println("Connected");
+          Serial.println("Making Post Request");
+
+          // Make a POST HTTP request:
+
+          String data = "checking";
+          // For testing
+          client.print("POST ");
+          client.print("/pressed");
+          client.println(" HTTP/1.1");
+          client.print("Host: "); client.println(server);
+          client.println("Connection: close");
+          client.println("User-Agent: Arduino/1.0");
+          client.print("Content-Length: ");
+          client.println(data.length());
+          client.println();
+          client.print(data);
+          client.println();            
+
+          }
+      }
+
+
+
+
+
+     void vibrate() 
+     {
+
+        Serial.print("Vibrating");
+
+          // set the effect to play
+          drv.setWaveform(0, 86);  // play effect 
+          drv.setWaveform(1, 0);       // end waveform
+        
+          // play the effect!
+          drv.go();
+        
+          // wait a bit
+          delay(3000);
+        
+//          effect++;
+//          if (effect > 117) effect = 1;
+     }
+
+      
+
+ 
+
