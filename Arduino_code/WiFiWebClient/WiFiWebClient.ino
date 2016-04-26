@@ -77,7 +77,6 @@ char server[] = "e5446b2b.ngrok.io";    // domain name for test page (using DNS)
 // with the IP address and port of the server
 // that you want to connect to (port 80 is default for HTTP):
 Adafruit_WINC1500Client client;
-Adafruit_WINC1500Client client2;
 
 void setup() {
 #ifdef WINC_EN
@@ -145,11 +144,15 @@ uint8_t effect = 1;
 void loop() {
   // if there are incoming bytes available
   // from the server, read them and print them:
+  
+  
   int count = 0;
-  
-  
   char pressed;
   while (client.available()) {
+ //   client.read() print char by char
+//    At char 155 is the number for pressed (0 or 1)
+//    Everything before 155 is the HTTP GET REQUEST RESPONSE
+    
     while (count != 155) {
       pressed = client.read();
       Serial.write(pressed);
@@ -158,23 +161,25 @@ void loop() {
 
     char yes = '1';
     char no = '0';
+
+
     if (pressed == yes) {
-          Serial.println("Pressed");
+          Serial.println("Button is pressed");
           delay(1000);
           vibrate();
     }
     if (pressed == no) {
-          Serial.println("Not pressed");
+          Serial.println("Button is not pressed");
  
     }
-      count = 0;
+     count = 0;
 
   }
 
   check();
 
   
-  
+  // Make post request to /stressed page here to update the stressed counter
   if (digitalRead(pin1) == LOW && (millis() - lastDebounceTime) > debounceDelay) {
         long pressed = millis();
         Serial.println("------ BUTTON PRESSED ------");
@@ -253,6 +258,10 @@ void post()
 
 void check()
 {
+
+  /* Makes post requests to the /pressed page to see if pressed variable
+   *  is changed or not
+   *  */
 
 //      char server2[] = "http://e5446b2b.ngrok.io/pressed";
       
