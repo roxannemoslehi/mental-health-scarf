@@ -26,14 +26,12 @@ def about():
 @app.route('/send_love', methods=["POST", "GET"])
 def send_love():
 
-
     # if send love button is pressed, make post request to scarf
     if request.method == "POST":
         if request.form['submit'] == 'love':
             print 'SENT LOVE!'
             global is_pressed
             is_pressed = 1
-            print is_pressed
         else:
             pass
 
@@ -43,6 +41,7 @@ def send_love():
 
 @app.route('/pressed', methods=["POST", "GET"])
 def pressed():
+
     global is_pressed
     global changed
 
@@ -50,15 +49,20 @@ def pressed():
         print "GOT POST REQUEST FOR /PRESSED"
         print "Pressed?: ", is_pressed
         if (request.get_data() == "checking"):
+            # PRESSED
             if (is_pressed == 1):
+                # this counter is for trying to match timing with the arduino
                 if changed == 5:
-                    # made succesful post request, change pressed back to unpressed
+                    # after 5 post requests, change pressed back to unpressed
                     is_pressed = 0
                     print "setting button to unpressed"
                     changed = 0
                 else:
+                    # keep updating changed counter
                     changed+= 1
+
                     pass
+            # UNPRESSED
             else:
                 print "button isn't pressed"
                 pass

@@ -1,18 +1,13 @@
 /*
   Web client
-
  This sketch connects to a website (http://www.adafruit.com)
  using a WINC1500
-
  This example is written for a network using WPA encryption. For
  WEP or WPA, change the Wifi.begin() call accordingly.
-
  This example is written for a network using WPA encryption. For
  WEP or WPA, change the Wifi.begin() call accordingly.
-
  * Circuit:
  * - Feather M0 WiFi (WINC1500), WiFi 101 shield, or WINC1500 Breakout
-
  created 13 July 2010
  by dlf (Metodo2 srl)
  modified 31 May 2012
@@ -48,8 +43,8 @@ Adafruit_WINC1500 WiFi(WINC_CS, WINC_IRQ, WINC_RST);
 //Adafruit_WINC1500 WiFi;
 
 
-char ssid[] = "Shabahaba";     //  your network SSID (name)
-char pass[] = "hellowassup";    // your network password (use for WPA, or use as key for WEP)
+char ssid[] = "Roxanne's iPhone";     //  your network SSID (name)
+char pass[] = "blueberries9";    // your network password (use for WPA, or use as key for WEP)
 int keyIndex = 0;                // your network key Index number (needed only for WEP)
 
 
@@ -70,13 +65,14 @@ int status = WL_IDLE_STATUS;
 // if you don't want to use DNS (and reduce your sketch size)
 // use the numeric IP instead of the name for the server:
 //IPAddress server(141,101,112,175);  // numeric IP for test page (no DNS)
-char server[] = "e5446b2b.ngrok.io";    // domain name for test page (using DNS)
+char server[] = "1c7ca621.ngrok.io";    // domain name for test page (using DNS)
 
 
 // Initialize the Ethernet client library
 // with the IP address and port of the server
 // that you want to connect to (port 80 is default for HTTP):
 Adafruit_WINC1500Client client;
+Adafruit_WINC1500Client client2;
 
 void setup() {
 #ifdef WINC_EN
@@ -134,8 +130,18 @@ void setup() {
   Serial.println("Connected to wifi");
   printWifiStatus();  
 
-  check();
-}
+  Serial.println("Connecting to server");
+  client.connect(server, 80);
+
+  if (client.connected()) {
+    Serial.println("Connected");
+  }   else {
+    Serial.println("Not Connected");
+
+   }
+
+//  check();
+  }
 
 
 
@@ -144,15 +150,9 @@ uint8_t effect = 1;
 void loop() {
   // if there are incoming bytes available
   // from the server, read them and print them:
-  
-  
   int count = 0;
   char pressed;
   while (client.available()) {
- //   client.read() print char by char
-//    At char 155 is the number for pressed (0 or 1)
-//    Everything before 155 is the HTTP GET REQUEST RESPONSE
-    
     while (count != 155) {
       pressed = client.read();
       Serial.write(pressed);
@@ -161,35 +161,33 @@ void loop() {
 
     char yes = '1';
     char no = '0';
-
-
     if (pressed == yes) {
-          Serial.println("Button is pressed");
+          Serial.println("`Pressed");
           delay(1000);
           vibrate();
     }
     if (pressed == no) {
-          Serial.println("Button is not pressed");
+          Serial.println("Not pressed");
  
     }
-     count = 0;
+      count = 0;
 
   }
 
   check();
 
-  
-  // Make post request to /stressed page here to update the stressed counter
-  if (digitalRead(pin1) == LOW && (millis() - lastDebounceTime) > debounceDelay) {
-        long pressed = millis();
-        Serial.println("------ BUTTON PRESSED ------");
-        post();
-        lastDebounceTime = millis();
-//  } else {
-//        Serial.println("HIGH");
+    
 
-
-  }
+//    if (digitalRead(pin1) == LOW && (millis() - lastDebounceTime) > debounceDelay) {
+//          long pressed = millis();
+//          Serial.println("------ BUTTON PRESSED ------");
+//          post();
+//          lastDebounceTime = millis();
+//  //  } else {
+//  //        Serial.println("HIGH");
+//
+//
+//  }
 
 
 
@@ -230,7 +228,11 @@ void printWifiStatus() {
 
 void post()
 {
-      if (client.connect(server, 80)) 
+
+      Serial.println("Connecting to server");
+      client.connect(server, 80);
+      delay(1000);
+      if (client.connected()) 
       {
           Serial.println("Connected");
           Serial.println("Making Post Request");
@@ -239,29 +241,39 @@ void post()
 
           String data = "love";
           // For testing
+          client.connect(server, 80);
           client.print("POST ");
+          Serial.println("POST");
           client.print("/stressed");
+          Serial.println("/stressed");
           client.println(" HTTP/1.1");
+          Serial.println(" HTTP/1.1");
           client.print("Host: "); client.println(server);
+          Serial.print(" Host: "); Serial.println(server);
           client.println("Connection: close");
+          Serial.print("Connection: close");
           client.println("User-Agent: Arduino/1.0");
+          Serial.print("User-Agent: Arduino/1.0");
           client.print("Content-Length: ");
+          Serial.print("Content-Length: ");
           client.println(data.length());
           client.println();
           client.print(data);
-          client.println();                           
+          Serial.print("Sent data ");
+          client.println();   
+          Serial.print("Finished Post Request");
+                        
 
+      } else {
+         Serial.println("Not connected to server");
       }
+      
 
  
 }
 
 void check()
 {
-
-  /* Makes post requests to the /pressed page to see if pressed variable
-   *  is changed or not
-   *  */
 
 //      char server2[] = "http://e5446b2b.ngrok.io/pressed";
       
@@ -313,6 +325,3 @@ void check()
      }
 
       
-
- 
-
