@@ -47,6 +47,9 @@ char ssid[] = "Roxanne's iPhone";     //  your network SSID (name)
 char pass[] = "blueberries9";    // your network password (use for WPA, or use as key for WEP)
 int keyIndex = 0;                // your network key Index number (needed only for WEP)
 
+//char ssid[] = "Shabahaba";     //  your network SSID (name)
+//char pass[] = "hellowassup";
+
 
 Adafruit_DRV2605 drv;
 
@@ -54,25 +57,30 @@ int pin1 = 6;
 volatile int state = LOW;
 
 long lastDebounceTime = 0;
-long debounceDelay = 300;
+long debounceDelay = 100;
 int lastButton = LOW;
 int buttonState;
 bool connection;
 
 long lastButtonPress = 0;
 
+//bool pressed;
+//pressed = false;
+
 int status = WL_IDLE_STATUS;
 // if you don't want to use DNS (and reduce your sketch size)
 // use the numeric IP instead of the name for the server:
 //IPAddress server(141,101,112,175);  // numeric IP for test page (no DNS)
-char server[] = "1c7ca621.ngrok.io";    // domain name for test page (using DNS)
+char server[] = "0b4ed47a.ngrok.io";    // domain name for test page (using DNS)
 
 
 // Initialize the Ethernet client library
 // with the IP address and port of the server
 // that you want to connect to (port 80 is default for HTTP):
+
+
 Adafruit_WINC1500Client client;
-Adafruit_WINC1500Client client2;
+Adafruit_WINC1500Client love_client;
 
 void setup() {
 #ifdef WINC_EN
@@ -86,14 +94,14 @@ void setup() {
   pinMode(pin1, INPUT_PULLUP);
 
 // vibration testing
-  Serial.println("DRV test");
-  drv.begin();
-  
-  drv.selectLibrary(1);
-  
-  // I2C trigger by sending 'go' command 
-  // default, internal trigger when sending GO command
-  drv.setMode(DRV2605_MODE_INTTRIG); 
+//  Serial.println("DRV test");
+//  drv.begin();
+//  
+//  drv.selectLibrary(1);
+//  
+//  // I2C trigger by sending 'go' command 
+//  // default, internal trigger when sending GO command
+//  drv.setMode(DRV2605_MODE_INTTRIG); 
   
 
   while (!Serial) {
@@ -134,9 +142,18 @@ void setup() {
   client.connect(server, 80);
 
   if (client.connected()) {
-    Serial.println("Connected");
+    Serial.println("Client Connected");
   }   else {
-    Serial.println("Not Connected");
+    Serial.println("Client Not Connected");
+
+   }
+
+  love_client.connect(server, 80);
+
+  if (love_client.connected()) {
+    Serial.println("Love Client Connected");
+  }   else {
+    Serial.println("Love Client Not Connected");
 
    }
 
@@ -150,48 +167,13 @@ uint8_t effect = 1;
 void loop() {
   // if there are incoming bytes available
   // from the server, read them and print them:
-  int count = 0;
-  char pressed;
-  while (client.available()) {
-    while (count != 155) {
-      pressed = client.read();
-      Serial.write(pressed);
-      count ++;
-    }
-
-    char yes = '1';
-    char no = '0';
-    if (pressed == yes) {
-          Serial.println("`Pressed");
-          delay(1000);
-          vibrate();
-    }
-    if (pressed == no) {
-          Serial.println("Not pressed");
- 
-    }
-      count = 0;
-
-  }
-
-  check();
-
-    
-
-//    if (digitalRead(pin1) == LOW && (millis() - lastDebounceTime) > debounceDelay) {
-//          long pressed = millis();
-//          Serial.println("------ BUTTON PRESSED ------");
-//          post();
-//          lastDebounceTime = millis();
-//  //  } else {
-//  //        Serial.println("HIGH");
-//
-//
-//  }
+  Serial.println("In loop"); 
+//  delay(1000);
+  
+  check_for_button_press();
+  check_for_vibration();
 
 
-
-//vibration testing
 
 
 //   if the server's disconnected, stop the client:
@@ -226,16 +208,40 @@ void printWifiStatus() {
   Serial.println(" dBm");
 }
 
+void check_for_button_press() {
+
+    Serial.print("checking for button press");
+
+      
+//    if (client.connect(server, 80)) {
+
+   // --------------------- BUTTON PRESSING  --------------------- 
+      if (digitalRead(pin1) == LOW && (millis() - lastDebounceTime) > debounceDelay) {
+            long pressed = millis();
+            Serial.println("------ BUTTON PRESSED ------");
+            post();
+//            pressed = true;
+            lastDebounceTime = millis();
+    //  } else {
+    //        Serial.println("HIGH");
+  
+    
+       }
+
+//     client.stop();
+//  }
+//  
+}
+
 void post()
 {
 
       Serial.println("Connecting to server");
       client.connect(server, 80);
-      delay(1000);
       if (client.connected()) 
       {
           Serial.println("Connected");
-          Serial.println("Making Post Request");
+          Serial.println("Making Post Request for button press");
 
           // Make a POST HTTP request:
 
@@ -267,61 +273,96 @@ void post()
       } else {
          Serial.println("Not connected to server");
       }
-      
+      client.stop();
 
  
 }
 
-void check()
+void check_for_vibration()
 {
 
 //      char server2[] = "http://e5446b2b.ngrok.io/pressed";
-      
-      if (client.connect(server, 80)) 
+      Serial.print("checking for vibrations");
+
+      love_client.connect(server, 80);
+
+      if (love_client.connected()) 
       {
           Serial.println("Connected");
-          Serial.println("Making Post Request");
+          Serial.println("Making Post Request for Vibrations ");
 
           // Make a POST HTTP request:
 
           String data = "checking";
           // For testing
-          client.print("POST ");
-          client.print("/pressed");
-          client.println(" HTTP/1.1");
-          client.print("Host: "); client.println(server);
-          client.println("Connection: close");
-          client.println("User-Agent: Arduino/1.0");
-          client.print("Content-Length: ");
-          client.println(data.length());
-          client.println();
-          client.print(data);
-          client.println();            
+          love_client.print("POST ");
+          love_client.print("/pressed");
+          love_client.println(" HTTP/1.1");
+          love_client.print("Host: "); love_client.println(server);
+          love_client.println("Connection: close");
+          love_client.println("User-Agent: Arduino/1.0");
+          love_client.print("Content-Length: ");
+          love_client.println(data.length());
+          love_client.println();
+          love_client.print(data);
+          love_client.println();  
+
+
+          int count = 0;
+          char pressed;
+          
+          love_client.connect(server, 80);
+          if (love_client.available()) {
+            Serial.println("In while loop checking client"); 
+            while (count != 155) {
+              pressed = love_client.read();
+              Serial.write(pressed);
+              count ++;
+            }
+        
+            char yes = '1';
+            char no = '0';
+            if (pressed == yes) {
+                  Serial.println("`Pressed");
+                  vibrate();
+            }
+            if (pressed == no) {
+                  Serial.println("Not pressed");
+         
+            }
+              count = 0;
 
           }
+          
+
       }
 
+      love_client.stop();
+ }
 
 
 
 
-     void vibrate() 
-     {
 
-        Serial.print("Vibrating");
+void vibrate() {
+   // vibration setup
+  drv.begin();
+  drv.selectLibrary(1);
+  drv.setMode(DRV2605_MODE_INTTRIG);
 
-          // set the effect to play
-          drv.setWaveform(0, 86);  // play effect 
-          drv.setWaveform(1, 0);       // end waveform
-        
-          // play the effect!
-          drv.go();
-        
-          // wait a bit
-          delay(3000);
-        
-//          effect++;
-//          if (effect > 117) effect = 1;
-     }
+  Serial.print("Playing vibrations"); Serial.println(effect);
 
+  // create the waveform to play
+  drv.setWaveform(0, 88);
+  drv.setWaveform(89, 89);
+  drv.setWaveform(44, 44);
+  drv.setWaveform(88, 88);
+  drv.setWaveform(89, 89);
+  drv.setWaveform(44, 0);
+
+  // play the effect!
+  drv.go();
+
+  // wait a bit
+}
       
