@@ -18,7 +18,7 @@ void setup(void)
 //  while (!Serial);  // required for Flora & Micro
   delay(500);
   Serial.begin(9600);
-  pinMode(pin1, INPUT_PULLUP);
+//  pinMode(pin1, INPUT_PULLUP);
 
 // vibration testing
   Serial.println("DRV test");
@@ -35,33 +35,50 @@ uint8_t effect = 1;
 
 void loop(void)
 {
-  /* Wait for new data to arrive */
-
-//  Serial.println(digitalRead(pin1));
+//  /* Wait for new data to arrive */
+//
+////  Serial.println(digitalRead(pin1));
+////  if (digitalRead(pin1) == LOW && (millis() - lastDebounceTime) > debounceDelay) {
+////  button pressed
 //  if (digitalRead(pin1) == LOW && (millis() - lastDebounceTime) > debounceDelay) {
-//  button pressed
-  if (digitalRead(pin1) == LOW && (millis() - lastDebounceTime) > debounceDelay) {
-        long pressed = millis();
-        Serial.println("button pressed");
-        lastDebounceTime = millis();
-  } else {
-        Serial.println("HIGH");
-
-  }
+//        long pressed = millis();
+//        Serial.println("button pressed");
+//        lastDebounceTime = millis();
+//  } else {
+//        Serial.println("HIGH");
+//
+//  }
 
 //vibration testing
   Serial.print("Effect #"); Serial.println(effect);
 
-  // set the effect to play
-  drv.setWaveform(0,88);  // play effect 
-  drv.setWaveform(1, 0);       // end waveform
+  int counter = 0;
+  drv.begin();
+  drv.selectLibrary(1);
+  drv.setMode(DRV2605_MODE_INTTRIG);
+
+  Serial.print("Playing vibrations"); Serial.println(effect);
+
+  // create the waveform to play
+  drv.setWaveform(0, 88);
+  drv.setWaveform(89, 89);
+  drv.setWaveform(44, 44);
+  drv.setWaveform(88, 88);
+  drv.setWaveform(89, 89);
+  drv.setWaveform(44, 0);
 
   // play the effect!
   drv.go();
-
-  // wait a bit
-  delay(500);
-
-  effect++;
-  if (effect > 117) effect = 1;
+//  // set the effect to play
+//  drv.setWaveform(0,88);  // play effect 
+//  drv.setWaveform(1, 0);       // end waveform
+//
+//  // play the effect!
+//  drv.go();
+//
+//  // wait a bit
+//  delay(500);
+//
+//  effect++;
+//  if (effect > 117) effect = 1;
 }

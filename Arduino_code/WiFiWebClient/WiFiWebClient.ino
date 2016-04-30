@@ -74,7 +74,7 @@ int status = WL_IDLE_STATUS;
 // if you don't want to use DNS (and reduce your sketch size)
 // use the numeric IP instead of the name for the server:
 //IPAddress server(141,101,112,175);  // numeric IP for test page (no DNS)
-char server[] = "b9055f8c.ngrok.io";    // domain name for test page (using DNS)
+char server[] = "f107792b.ngrok.io";    // domain name for test page (using DNS)
 
 
 // Initialize the Ethernet client library
