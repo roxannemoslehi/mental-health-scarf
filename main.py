@@ -2,6 +2,7 @@ from flask import Flask, render_template,request, redirect, url_for
 from flask_bootstrap import Bootstrap
 import requests
 
+
 app = Flask(__name__)
 Bootstrap(app)
 # we are able to make 2 different requests on our webpage

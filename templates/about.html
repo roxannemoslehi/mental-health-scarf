@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>TITLE</title>
+    <title>A</title>
 
 
 
@@ -21,15 +21,25 @@
 
     <!-- <link href="/web_ui/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.css') }}">
+
 
 
     <!-- Custom CSS -->
     <!-- <link href="/web_ui/css/clean-blog.css" rel="stylesheet"> -->
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='clean-blog.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='clean-blog.min.css') }}">
+
+
 
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
 </head>
 
@@ -44,6 +54,7 @@
 
 
 <body>
+
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
         <div class="container-fluid">
@@ -61,7 +72,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
+                     <li>
                         <a href="{{ url_for('index') }}">Home</a>
                     </li>
                     <li>
@@ -77,19 +88,81 @@
         <!-- /.container -->
     </nav>
 
+    <!-- Callout -->
+    <aside class="callout" style="margin-top: -20px; background-color: #4cadad;">
+        <div class="text-vertical-center">
+            <h2>In our survey of more than 500 college students,</h2>
+            <h1>85% said they experience daily or weekly stress.</h1>
+        </div>
+    </aside>
+
+    <!-- Callout -->
+    <aside class="callout" style="margin-top: 0px; background-color: #4459A6;">
+        <div class="text-vertical-center">
+            <h1>9 out of 10 said they experience anxiety.</h1>
+        </div>
+    </aside>
+
+    <!-- Callout -->
+    <aside class="callout" style="margin-top: 0px; background-color: #E16B66;">
+        <div class="text-vertical-center">
+            <h1>So why is mental health not talked about more?</h1>
+        </div>
+    </aside>
+
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header home" style="background-color: #E69C00">
+    <header class="intro-header home" style="background-color: #4cadad; height: 800px;">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" >
                     <div class="site-heading home">
-                        <span class="subheading" style="font-size: 18px"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in elit et ipsum tempor rutrum. Ut finibus ut leo eu gravida. Suspendisse venenatis felis vel urna vestibulum, ac suscipit diam laoreet. Quisque pretium mauris magna, et dignissim urna euismod nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in elit et ipsum tempor rutrum. Ut finibus ut leo eu gravida. Suspendisse venenatis felis vel urna vestibulum, ac suscipit diam laoreet. Quisque pretium mauris magna, et dignissim urna euismod nec.</p></spam>
+                        <img src="/static/logo2.png" class="img-rounded center-block" img style="max-width:200px; margin-top: -40px; margin-bottom: 0px">
+                        <div class="awearness">Introducing Awearness</div>
+                        <span class="subheading" style="font-size: 20px; margin-top: -6px;"><p>Awearness is a special scarf embedded with wearable tech. It is designed to raise awareness about stress and anxiety among college students. We think it's important for students to know that they aren't along in feeling overwhelmed. By wearing a scarf, "sending love", or simply sharing a logo, you can support the cause of college mental health.</span>
                     </div>
                 </div>
             </div>
         </div>
     </header>
+
+   <!-- Features Section -->
+    <section id="services" style="padding-bottom: 45px; padding-top: 15px">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">How does Awearness help?</h2>
+                    <h3 class="section-subheading text-muted" style="margin-bottom:80px">Here are the key features.</h3>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary" style="color:#4459A6"></i>
+                        <i class="fa fa-users fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="service-heading">A Connected Community</h4>
+                    <p class="text-muted">Awearness raises awareness about mental health among college students, and it connects students so they feel less alone.</p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary" style="color:#4459A6"></i>
+                        <i class="fa fa-music fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="service-heading">Relaxing Sounds</h4>
+                    <p class="text-muted">With the quick press of a button on the scarf, Awearness plays sounds to calm down a stressed student.</p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary" style="color:#4459A6"></i>
+                        <i class="fa fa-heart fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="service-heading">Send Love</h4>
+                    <p class="text-muted">Through the website, anyone can send love to students with Awearness scarves. They will feel little vibrations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer>
