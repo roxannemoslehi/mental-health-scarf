@@ -52,9 +52,7 @@ def pressed():
         if (request.get_data() == "checking"):
             # PRESSED
             if (is_pressed == 1):
-                # this counter is for trying to match timing with the arduino
                 if changed == 1:
-                    # after 5 post requests, change pressed back to unpressed
                     is_pressed = 0
                     print "setting button to unpressed"
                     changed = 0

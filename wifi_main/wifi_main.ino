@@ -57,15 +57,14 @@ Adafruit_WINC1500 WiFi(WINC_CS, WINC_IRQ, WINC_RST);
 //Adafruit_WINC1500 WiFi;
 
 
-//char ssid[] = "Juan's iPhone";     //  your network SSID (name)
-//char pass[] = "poopoo23";
-
 char ssid[] = "Roxanne's iPhone";     //  your network SSID (name)
 char pass[] = "blueberries9";    // your network password (use for WPA, or use as key for WEP)
 int keyIndex = 0;                // your network key Index number (needed only for WEP)
 
 //char ssid[] = "Shabahaba";     //  your network SSID (name)
 //char pass[] = "hellowassup";
+
+//char ssid[] = "CalVisitor";     //  your network SSID (name)
 
 
 Adafruit_DRV2605 drv;
@@ -111,7 +110,7 @@ void setup() {
 
 //  while (!Serial);  // required for Flora & Micro
   delay(500);
-  Serial.begin(9600);
+//  Serial.begin(9600);
   pinMode(button, INPUT_PULLUP);
 
 // vibration testing
@@ -125,26 +124,26 @@ void setup() {
 //  drv.setMode(DRV2605_MODE_INTTRIG); 
   
 
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
+//  while (!Serial) {
+//    ; // wait for serial port to connect. Needed for native USB port only
+//  }
 
   //Initialize serial and wait for port to open:
-  Serial.begin(9600);
+//  Serial.begin(9600);
 
-  Serial.println("WINC1500 Web client test");
+//  Serial.println("WINC1500 Web client test");
 
   // check for the presence of the shield:
   if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("WiFi shield not present");
+//    Serial.println("WiFi shield not present");
     // don't continue:
     while (true);
   }
 
   // attempt to connect to Wifi network:
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.print("Attempting to connect to SSID: ");
-    Serial.println(ssid);
+//    Serial.print("Attempting to connect to SSID: ");
+//    Serial.println(ssid);
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     status = WiFi.begin(ssid, pass);
 
@@ -156,15 +155,15 @@ void setup() {
     }
   }
 
-  Serial.println("Connected to wifi");
+//  Serial.println("Connected to wifi");
   printWifiStatus();  
 
-  Serial.println("Connecting to server");
+//  Serial.println("Connecting to server");
   
   if (client.connect(server, 80)) {
-    Serial.println("Client Connected");
+//    Serial.println("Client Connected");
   }   else {
-    Serial.println("Client Not Connected");
+//    Serial.println("Client Not Connected");
 
    }
 
@@ -177,7 +176,7 @@ uint8_t effect = 1;
 void loop() {
   // if there are incoming bytes available
   // from the server, read them and print them:
-  Serial.println("In loop"); 
+//  Serial.println("In loop"); 
   delay(250);
 
 
@@ -191,7 +190,7 @@ void loop() {
       vibrate_count = 0;
   } else {
     vibrate_count ++;
-    Serial.println(vibrate_count);
+//    Serial.println(vibrate_count);
   }
 
   
@@ -216,32 +215,31 @@ void loop() {
 
 void printWifiStatus() {
   // print the SSID of the network you're attached to:
-  Serial.print("SSID: ");
-  Serial.println(WiFi.SSID());
+//  Serial.print("SSID: ");
+//  Serial.println(WiFi.SSID());
 
   // print your WiFi shield's IP address:
   IPAddress ip = WiFi.localIP();
-  Serial.print("IP Address: ");
-  Serial.println(ip);
+//  Serial.print("IP Address: ");
+//  Serial.println(ip);
 
   // print the received signal strength:
   long rssi = WiFi.RSSI();
-  Serial.print("signal strength (RSSI):");
-  Serial.print(rssi);
-  Serial.println(" dBm");
+//  Serial.print("signal strength (RSSI):");
+//  Serial.print(rssi);
+//  Serial.println(" dBm");
 }
 
 void check_for_button_press() {
 
-    Serial.print("checking for button press");
+//    Serial.print("checking for button press");
 
       
-//    if (client.connect(server, 80)) {
 
    // --------------------- BUTTON PRESSING  --------------------- 
       if (digitalRead(button) == LOW && (millis() - lastDebounceTime) > debounceDelay) {
             long pressed = millis();
-            Serial.println("------ BUTTON PRESSED ------");
+//            Serial.println("------ BUTTON PRESSED ------");
             post();
 //            pressed = true;
             lastDebounceTime = millis();
@@ -264,13 +262,11 @@ void check_for_button_press() {
 void post()
 {
 
-      Serial.println("Connecting to server");
+//      Serial.println("Connecting to server");
       
       if (client.connect(server, 80)) 
       {
-          Serial.println("Connected");
-          Serial.println("Making Post Request for button press");
-          post_type = "stressed";
+
 
           // Make a POST HTTP request:
 
@@ -278,29 +274,29 @@ void post()
           // For testing
           client.connect(server, 80);
           client.print("POST ");
-          Serial.println("POST");
+//          Serial.println("POST");
           client.print("/stressed");
-          Serial.println("/stressed");
+//          Serial.println("/stressed");
           client.println(" HTTP/1.1");
-          Serial.println(" HTTP/1.1");
+//          Serial.println(" HTTP/1.1");
           client.print("Host: "); client.println(server);
-          Serial.print(" Host: "); Serial.println(server);
+//          Serial.print(" Host: "); Serial.println(server);
           client.println("Connection: close");
-          Serial.print("Connection: close");
+//          Serial.print("Connection: close");
           client.println("User-Agent: Arduino/1.0");
-          Serial.print("User-Agent: Arduino/1.0");
+//          Serial.print("User-Agent: Arduino/1.0");
           client.print("Content-Length: ");
-          Serial.print("Content-Length: ");
+//          Serial.print("Content-Length: ");
           client.println(data.length());
           client.println();
           client.print(data);
-          Serial.print("Sent data ");
+//          Serial.print("Sent data ");
           client.println();   
-          Serial.print("Finished Post Request");
+//          Serial.print("Finished Post Request");
                         
 
       } else {
-         Serial.println("Button client not connected to server");
+//         Serial.println("Button client not connected to server");
       }
       client.stop();
 
@@ -311,14 +307,14 @@ void check_for_vibration()
 {
 
 //      char server2[] = "http://e5446b2b.ngrok.io/pressed";
-      Serial.print("checking for vibrations");
+//      Serial.print("checking for vibrations");
 
 //      love_client.connect(server, 80);
 
       if (client.connect(server, 80)) 
       {
-          Serial.println("Connected");
-          Serial.println("Making Post Request for Vibrations ");
+//          Serial.println("Connected");
+//          Serial.println("Making Post Request for Vibrations ");
 
           post_type = "pressed";
 
@@ -343,35 +339,35 @@ void check_for_vibration()
         
           delay(1000);
           if (client.available()) {
-              Serial.println("In while loop checking client"); 
+//              Serial.println("In while loop checking client"); 
               
               
               while (count != 155) {
                 pressed = client.read();
-                Serial.write(pressed);
+//                Serial.write(pressed);
                 count ++;
               }
           
               char yes = '1';
               char no = '0';
               if (pressed == yes) {
-                    Serial.println("`Pressed");
+//                    Serial.println("`Pressed");
                     vibrate();
               }
               if (pressed == no) {
-                    Serial.println("Not pressed");
+//                    Serial.println("Not pressed");
            
               }
                 count = 0;
         
               } else {
-                Serial.println("Client was not available to read bytes");
+//                Serial.println("Client was not available to read bytes");
               }
 
 
       } 
       else {
-        Serial.println("Vibration client not connected");
+//        Serial.println("Vibration client not connected");
       }
 
 
@@ -391,7 +387,7 @@ void vibrate() {
   drv.selectLibrary(1);
   drv.setMode(DRV2605_MODE_INTTRIG);
 
-  Serial.print("Playing vibrations"); Serial.println(effect);
+//  Serial.print("Playing vibrations"); Serial.println(effect);
 
   // create the waveform to play
   drv.setWaveform(0, 88);
@@ -426,13 +422,13 @@ void vibrate() {
 }
 
 void setupSound(int pin) {
-  Serial.println("Setting up Sound");
+//  Serial.println("Setting up Sound");
   pinMode(pin, OUTPUT);
   digitalWrite(pin, HIGH); // Set the pin high as the default state
 }
 
 void activateSound(int pin) {
-  Serial.println("Activating Sound");
+//  Serial.println("Activating Sound");
   digitalWrite(pin, LOW); // bring the pin low to begin the activation
   /*
   According to the documentation, the Audio FX board needs 50ms to trigger. However,
